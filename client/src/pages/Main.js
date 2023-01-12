@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import ButtonContainer from '../components/ButtonContainer';
 import Display from '../components/Display';
-import { ResultProvider } from '../context/ResultContext';
+import { OperationProvider } from '../context/OperationContext';
 
 function Main() {
 
+  const [result, setResult] = useState("");
+
   return (
-    <>
-      <ResultProvider>
-        <Display/>
-        <ButtonContainer/>
-      </ResultProvider>
-    </>
+    <div className='w-full h-full lg:w-1/2 lg:mx-auto bg-blue-100'>
+      <OperationProvider>
+            <Display result={result}/>
+            <ButtonContainer result={result} setResult={setResult} />
+      </OperationProvider>
+    </div>
   );
 }
 

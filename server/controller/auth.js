@@ -55,7 +55,8 @@ const LoginHandler = async (req, res) => {
     const token = Jwt.sign({id: user_id,}, process.env.ACCESS_TOKEN);
     await Auth.updateOne({email:req.body.email}, {
         $set: {
-            timestamp_in: new Date()
+            timestamp_in: new Date(),
+            timestamp_out: new Date()
         }
     });
     res.header('auth-token', token).status(200).json({
@@ -64,4 +65,28 @@ const LoginHandler = async (req, res) => {
     });
 }
 
-module.exports = {RegisterHandler, LoginHandler};
+const LogoutHandler = async (req, res) => {
+    const user = await Auth.findOne({user_id: req.body.user_id});
+    if (!user) return res.status(400).json({
+        "status":"failed",
+        "message": "user is not found."
+    });
+    try {
+        await Auth.updateOne({user_id:req.body.user_id}, {
+            $set: {
+                timestamp_out: new Date()
+            }
+        });
+        res.status(200).json({
+            "status":"success",
+            "message": "user has logout."
+        })
+    } catch (error) {
+        res.status(400).json({
+            "status":"failed",
+            "message": "user failed to logout."
+        })
+    }
+}
+
+module.exports = {RegisterHandler, LoginHandler, LogoutHandler};

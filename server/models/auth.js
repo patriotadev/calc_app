@@ -1,7 +1,17 @@
 const mongoose = require('mongoose');
 
 const authSchema = new mongoose.Schema({
-    username: {
+    user_id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+        min: 6,
+        max: 255
+    },
+    email: {
         type: String,
         required: true,
         min: 6,
@@ -13,15 +23,18 @@ const authSchema = new mongoose.Schema({
         min: 6,
         max: 1024
     },
-    timestamp_in: {
+    created_at: {
         type: Date,
         default: Date.now
     },
+    timestamp_in: {
+        type: String,
+        default: null
+    },
     timestamp_out: {
-        type: Date,
-        default: Date.now
-    }
-
+        type: String,
+        default: null
+    },
 });
 
 const auth = mongoose.model('auth', authSchema);

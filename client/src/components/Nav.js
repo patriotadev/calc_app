@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { IsSpellingContext } from "../context/IsSpellingContext"
+import { Link } from "react-router-dom";
 
 function Nav() {
 
@@ -15,7 +16,9 @@ function Nav() {
                 <label className="font-medium">Spelling</label>
                 <input type={"checkbox"} onChange={() => setIsSpelling(!isSpelling)}/>
             </div>
-            <button className='w-fit h-fit bg-blue-600 py-1 px-2 rounded-lg text-white'>Logout</button>
+            <Link to={'/login'}>
+                <button className='w-fit h-fit bg-blue-600 py-1 px-2 rounded-lg text-white'>Logout</button>
+            </Link>
         </div>
     </div>
   )

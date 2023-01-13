@@ -13,13 +13,15 @@ function Button({label, index}) {
   const [spelling, setSpelling] = useContext(SpellingContext);
 
   const operationHandler = (index) => {
-    if (index !== 1 && index !== 20 && index !== 3) {
+    if (index !== 1 && index !== 20 && index !== 3 && index !== 2) {
         let n = label !== 'x' ? label : '*';
         setOperation(operation => [...operation, n]);
     } else if (index === 1) {
         setOperation([]);
         setResult("");
         setSpelling("");
+    } else if (index === 2) {
+        window.location.reload();
     } else if (index === 3) {
         let data = operation;
         let currentData = data.splice(0, data.length - 1);

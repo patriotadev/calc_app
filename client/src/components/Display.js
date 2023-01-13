@@ -16,7 +16,7 @@ function Display() {
     <div className='w-full h-[30vh] pt-4 px-4 flex flex-col justify-between pb-2'>
         <Nav/>
         <div className='mt-3'>
-            <p className='italic text-lg'>{isSpelling ? `"${spelling}"` : ''}</p>
+            <p className={`italic text-lg capitalize ${spelling === "" ? 'hidden' : 'inline'}`}>{isSpelling ? `"${spelling}"` : ''}</p>
         </div>
         <div className='w-full h-full mt-2 flex justify-end items-end'>
             <div className='flex flex-col items-end'>

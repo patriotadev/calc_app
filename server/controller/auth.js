@@ -2,6 +2,7 @@ const Auth = require('../models/auth');
 const {nanoid} = require('nanoid');
 const { RegisterValidation, LoginValidation } = require('../validator/auth');
 const bcrypt = require("bcrypt");
+const Jwt = require('jsonwebtoken');
 
 const RegisterHandler = async (req, res) => {
     const {error} = RegisterValidation(req.body);
@@ -51,7 +52,13 @@ const LoginHandler = async (req, res) => {
         "message": "invalid password."
     });
     const {user_id, name, email} = user;
-    res.status(200).json({
+    const token = Jwt.sign({id: user_id,}, process.env.ACCESS_TOKEN);
+    await Auth.updateOne({email:req.body.email}, {
+        $set: {
+            timestamp_in: new Date()
+        }
+    });
+    res.header('auth-token', token).status(200).json({
         "status": "success",
         "data": {user_id, name, email},
     });

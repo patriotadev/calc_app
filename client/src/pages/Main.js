@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import ButtonContainer from '../components/ButtonContainer';
 import Display from '../components/Display';
+import { IsSpellingProvider } from '../context/IsSpellingContext';
 import { OperationProvider } from '../context/OperationContext';
+import { ResultProvider } from '../context/ResultContext';
+import { SpellingProvider } from '../context/SpellingContext';
 
 function Main() {
-
-  const [result, setResult] = useState("");
 
   return (
     <div className='w-full h-full lg:w-1/2 lg:mx-auto bg-blue-100'>
       <OperationProvider>
-            <Display result={result}/>
-            <ButtonContainer result={result} setResult={setResult} />
+        <ResultProvider>
+          <IsSpellingProvider>
+            <SpellingProvider>
+              <Display/>
+              <ButtonContainer/>
+            </SpellingProvider>
+          </IsSpellingProvider>
+        </ResultProvider>
       </OperationProvider>
     </div>
   );

@@ -40,7 +40,7 @@ const LoginHandler = async (req, res) => {
         "status": "failed",
         "message": error.details[0].message
     });
-q
+
     const user = await Auth.findOne({email: req.body.email});
     if (!user) return res.status(400).json({
         "status":"failed",

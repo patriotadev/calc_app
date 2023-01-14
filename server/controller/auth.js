@@ -40,7 +40,7 @@ const LoginHandler = async (req, res) => {
         "status": "failed",
         "message": error.details[0].message
     });
-
+q
     const user = await Auth.findOne({email: req.body.email});
     if (!user) return res.status(400).json({
         "status":"failed",
@@ -53,10 +53,12 @@ const LoginHandler = async (req, res) => {
     });
     const {user_id, name, email} = user;
     const token = Jwt.sign({id: user_id,}, process.env.ACCESS_TOKEN);
+    const date = new Date();
+    const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     await Auth.updateOne({email:req.body.email}, {
         $set: {
-            timestamp_in: new Date(),
-            timestamp_out: new Date()
+            timestamp_in: currentDate,
+            timestamp_out: currentDate
         }
     });
     res.header('auth-token', token).status(200).json({
@@ -66,6 +68,8 @@ const LoginHandler = async (req, res) => {
 }
 
 const LogoutHandler = async (req, res) => {
+    const date = new Date();
+    const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`; 
     const user = await Auth.findOne({user_id: req.body.user_id});
     if (!user) return res.status(400).json({
         "status":"failed",
@@ -74,7 +78,7 @@ const LogoutHandler = async (req, res) => {
     try {
         await Auth.updateOne({user_id:req.body.user_id}, {
             $set: {
-                timestamp_out: new Date()
+                timestamp_out: currentDate
             }
         });
         res.status(200).json({
@@ -89,4 +93,15 @@ const LogoutHandler = async (req, res) => {
     }
 }
 
-module.exports = {RegisterHandler, LoginHandler, LogoutHandler};
+const GetUserHandler = async (req, res) => {
+    const users = await Auth.find();
+    // const {user_id, name} = users;
+    res.status(200).json({
+        status: "success",
+        data: {
+            users
+        }
+    });
+}
+
+module.exports = {RegisterHandler, LoginHandler, LogoutHandler, GetUserHandler};
